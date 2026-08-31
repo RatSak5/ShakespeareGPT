@@ -87,12 +87,17 @@ python generate.py --load-path checkpoint.pt --prompt "ROMEO:\n" --n-tokens 500
 | Flag | Default | Description |
 |---|---|---|
 | `--load-path` | `checkpoints/checkpoint.pt` | Checkpoint to load |
-| `--prompt` | """HAMLET:
+| `--prompt` | `hamlet_default_prompt` | Seed text to continue from |
+| `--n-tokens` | `1000` | Number of characters to generate |
+
+hamlet_default_prompt :
+
+```
+HAMLET:
 To be, or not to be, that is the question: whether 'tis 
 nobler in the mind to suffer the slings and arrows of outrageous 
 fortune, or to take arms against a sea of troubles.
-""" | Seed text to continue from |
-| `--n-tokens` | `1000` | Number of characters to generate |
+```
 
 ## Acknowledgements and Goals
 - It's a pretty small and slow model. Of course we could use more layers and more data and more of everything. But at the end of the day, is a practice project.
