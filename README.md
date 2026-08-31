@@ -7,13 +7,15 @@ A GPT-style, character-level language model built from scratch in raw PyTorch te
 ```
 microgpt/
 ├── building_blocks.py   # Linear, Embedding, PositionalEncode, SelfAttention, CrossAttention, FFN
-├── models.py             # EncoderLayer, DecoderLayer, DecoderOnlyModel (the model actually trained)
-├── optim.py               # Adam, SGD, RMSprop, AdaGrad -- implemented from scratch
+├── models.py             # EncoderLayer, DecoderLayer, DecoderOnlyModel
+├── optim.py               # Adam, SGD, RMSprop, AdaGrad
 ├── data.py                 # vocab building, batching, optimizer-hyperparameter config
-├── checkpoint.py          # save/load model weights + architecture + vocab
+├── checkpoint.py          # save/load (model weights | architecture | vocab)
 ├── main.py                  # training entry point
 ├── generate.py             # text generation from a saved checkpoint
-└── shakespeare.txt         # tinyshakespeare dataset
+├── shakespeare.txt         # tinyshakespeare dataset
+└── Notebooks               # Notebooks used while experimenting
+      └── Transformer_implementation.ipynb
 ```
 
 ## Features
