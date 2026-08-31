@@ -1,15 +1,6 @@
-# microgpt
+# MicroGPT
 
-A GPT-style, character-level language model built from scratch in raw PyTorch tensors — no `nn.Module`, no `torch.optim`. Every layer (linear, embedding, multi-head attention, layer norm, feed-forward) and every optimizer (Adam, SGD, RMSprop, AdaGrad) is hand-implemented. Trains on the [tinyshakespeare](https://github.com/karpathy/char-rnn) dataset to generate Shakespeare-flavored text one character at a time.
-
-## Features
-
-- Decoder-only transformer (causal self-attention, no cross-attention) built entirely from `torch.Tensor` operations
-- Character-level tokenization — no subword vocabulary, no external tokenizer
-- Four optimizers implemented from the underlying math: **Adam**, **SGD** (with momentum/dampening), **RMSprop**, **AdaGrad**
-- Transformer-style learning rate warmup + decay schedule
-- Checkpointing — architecture and vocab are saved alongside weights, so `generate.py` can reload a model with no extra flags
-- Fully CLI-configurable via `argparse`
+A GPT-style, character-level language model built from scratch in raw PyTorch tensors — no `nn.Module`, no `torch.optim`. Everything is hand-implemented. Trains on the shakespeare dataset(https://github.com/karpathy/char-rnn), as provided, to generate Shakespeare-flavored text one character at a time.
 
 ## Project structure
 
@@ -25,7 +16,16 @@ microgpt/
 └── shakespeare.txt         # tinyshakespeare dataset
 ```
 
-## Installation
+## Features
+
+- Decoder-only transformer (causal self-attention, no cross-attention) built entirely from `torch.Tensor` operations
+- Character-level tokenization, No external tokenizer used
+- Four optimizers implemented from the underlying math: **Adam**, **SGD** (with momentum/dampening), **RMSprop**, **AdaGrad**
+- warmup and decay schedule in loss as per the "Attention is all you need" paper
+- Checkpointing — architecture and vocab are saved alongside weights, so `generate.py` can reload a model with no extra flags
+- Can input values in command-line through `argparse`
+
+## Installations required
 
 ```bash
 pip install torch matplotlib
@@ -39,9 +39,11 @@ pip install torch matplotlib
 python main.py
 ```
 
-This builds the vocabulary from `shakespeare.txt`, trains a 4-layer decoder-only transformer, periodically checkpoints to `checkpoint.pt`, and plots the train/val loss curve at the end.
+- This builds the vocabulary from `shakespeare.txt`,
+- Trains a 4-layer decoder-only transformer by default, you can change that variable as mentioned below
+- Periodically checkpoints to `checkpoint.pt`, and plots the train/val loss curve at the end.
 
-Common flags:
+Available flags:
 
 | Flag | Default | Description |
 |---|---|---|
@@ -54,9 +56,9 @@ Common flags:
 | `--n-decoder-layers` | `4` | Number of decoder layers |
 | `--optimizer` | `adam` | One of `adam`, `sgd`, `rmsprop`, `adagrad` |
 | `--warmup-steps` | `400` | LR warmup steps |
-| `--save-path` | `checkpoint.pt` | Where to write the checkpoint |
+| `--save-path` | `checkpoints/checkpoint.pt` | Where to write the checkpoint |
 
-Run `python main.py --help` for the full list, including per-optimizer hyperparameters (`--lr`, `--beta1`, `--beta2`, `--momentum`, `--dampening`, `--gamma`, `--eps`).
+Run `python main.py --help` for the full list, including per-optimizer hyperparameters for specific optimizer(`--lr`, `--beta1`, `--beta2`, `--momentum`, `--dampening`, `--gamma`, `--eps`).
 
 Example, training with SGD and a larger context window:
 
@@ -64,13 +66,17 @@ Example, training with SGD and a larger context window:
 python main.py --optimizer sgd --lr 0.01 --momentum 0.9 --block-size 256
 ```
 
+Although, there isn't a way to shift to a different architecture transformer, I have coded a transformer with encoder too for experimentation and reference.
+
 ### Generate
 
 ```bash
 python generate.py
 ```
 
-Loads `checkpoint.pt` and autoregressively samples characters from a default Hamlet prompt. Architecture and vocab are read directly from the checkpoint, so no model-size flags are needed here.
+Loads `checkpoint.pt` and autoregressively samples characters from a default prompt. Architecture and vocab are read directly from the checkpoint, so no model-size flags are needed here.
+
+Usage example,
 
 ```bash
 python generate.py --load-path checkpoint.pt --prompt "ROMEO:\n" --n-tokens 500
@@ -78,10 +84,15 @@ python generate.py --load-path checkpoint.pt --prompt "ROMEO:\n" --n-tokens 500
 
 | Flag | Default | Description |
 |---|---|---|
-| `--load-path` | `checkpoint.pt` | Checkpoint to load |
-| `--prompt` | *(Hamlet soliloquy)* | Seed text to continue from |
+| `--load-path` | `checkpoints/checkpoint.pt` | Checkpoint to load |
+| `--prompt` | """HAMLET:
+To be, or not to be, that is the question: whether 'tis 
+nobler in the mind to suffer the slings and arrows of outrageous 
+fortune, or to take arms against a sea of troubles.
+""" | Seed text to continue from |
 | `--n-tokens` | `1000` | Number of characters to generate |
 
-## Notes
-
-This project prioritizes understanding the mechanics of a transformer and its optimizers over speed — attention loops over heads in Python rather than batching them, and there's no GPU-specific optimization. It's meant as a from-scratch learning exercise, not a production training script.
+## Acknowledgements and Goals
+- It's a pretty small and slow model. Of course we could use more layers and more data and more of everything. But at the end of the day, is a practice project.
+- I'd make it so that we can transfer the tensors to a different device.
+- Tokenizers will also be added to the code.
