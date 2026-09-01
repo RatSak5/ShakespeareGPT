@@ -133,6 +133,8 @@ class DecoderOnlyModel:
         return self.params
 
     def train(self, optim, warmup_steps, iterations, eval_interval, train_data, val_data, batch_size, block_size, save_path, save_data):
+        from checkpoint import save_checkpoint
+
         t_loss, v_loss = [], []
         optim.describe()
         
@@ -164,7 +166,6 @@ class DecoderOnlyModel:
                 v_loss.append(loss_v.item())
     
                 if step % 100 == 0:
-                    from checkpoint import save_checkpoint
                     save_checkpoint(model=self, data=save_data, path=save_path)
                     print(f"iteration: {step:5d} | loss: {loss.item():.4f} | val loss: {loss_v.item():.4f}")
                     print(f"----learn: {lr:.10f}")
