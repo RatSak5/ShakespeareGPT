@@ -22,11 +22,11 @@ def load_checkpoint(path):
     checkpoint = torch.load(path, weights_only=False)
 
     model = DecoderOnlyModel(
-        checkpoint["vocab_size"],
-        checkpoint["d_emb"],
-        checkpoint["d_ff"],
-        checkpoint["heads"],
-        checkpoint["n_decoder_layers"],
+        vocab_size=checkpoint["vocab_size"],
+        d_emb=checkpoint["d_emb"],
+        d_ff=checkpoint["d_ff"],
+        heads=checkpoint["heads"],
+        n_decoder_layers=checkpoint["n_decoder_layers"],
     )
 
     params = model.parameters()
