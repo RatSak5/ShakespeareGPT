@@ -1,4 +1,4 @@
-# MicroGPT
+# ShakespeareGPT
 
 A GPT-style, character-level language model built from scratch in raw PyTorch tensors — no `nn.Module`, no `torch.optim`. Everything is hand-implemented. Trains on the shakespeare dataset(https://github.com/karpathy/char-rnn), as provided, to generate Shakespeare-flavored text one character at a time.
 
