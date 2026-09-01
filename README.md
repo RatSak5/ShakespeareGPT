@@ -67,6 +67,9 @@ Example, training with SGD and a larger context window:
 ```bash
 python main.py --optimizer sgd --lr 0.01 --momentum 0.9 --block-size 256
 ```
+### Note
+
+The lr flag doesn't have any effect in the current code as I use the Attention paper loss with warmup steps. I will fix it soon to have other options too.
 
 Although, there isn't a way to shift to a different architecture transformer, I have coded a transformer with encoder too for experimentation and reference.
 
