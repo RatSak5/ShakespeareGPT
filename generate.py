@@ -40,7 +40,7 @@ def generate(prompt, n_tokens, load_path):
         generated_txt += ch
         print(generated_txt)
         print("________________________")
-        if len(X) < block_size:
+        if X.shape[1] < block_size:
             X = torch.tensor([X.tolist()[0] + [idx]])
         else:
             X = torch.tensor([X.tolist()[0][1:] + [idx]])
